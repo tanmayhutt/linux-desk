@@ -477,3 +477,67 @@ a.ls-row:hover { background: rgba(255,255,255,0.05); }
 /* BTOP WINDOW */
 .btop-content table th { padding: 4px 0; border-bottom: 1px solid var(--border-glass); }
 .btop-content table td { padding: 2px 0; }
+
+/* =====================================================
+   MOBILE RESPONSIVENESS
+   ===================================================== */
+@media (max-width: 768px) {
+    /* Hide non-essential waybar items */
+    #sys-cpu, #sys-ram, #sys-net, #sys-lang {
+        display: none !important;
+    }
+    
+    /* Shrink the waybar elements */
+    .waybar {
+        padding: 0 10px;
+        font-size: 12px;
+    }
+    .wb-workspaces .ws {
+        padding: 0 8px;
+    }
+
+    /* Wofi Menu */
+    .wofi-menu {
+        width: 90vw !important;
+        left: 5vw !important;
+        transform: translateX(0) translateY(-10px);
+        margin-left: 0;
+    }
+    .wofi-menu.active {
+        transform: translateX(0) translateY(0);
+    }
+    .wofi-search input {
+        font-size: 14px;
+    }
+    
+    /* Windows */
+    .hypr-win {
+        width: 95vw !important;
+        max-width: 100vw;
+        left: 50% !important; /* Keep it centered as best as possible */
+    }
+    
+    .win-header {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+    
+    .win-content {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    /* ASCII Art Scaling */
+    .nf-ascii pre {
+        font-size: 6px; /* Shrink ASCII art to fit on mobile */
+        line-height: 7px;
+    }
+    
+    /* Disable hover scaling animations to prevent sticky mobile states */
+    .clickable:hover {
+        transform: none !important;
+    }
+    .hypr-win.active {
+        transform: translate(-50%, -50%) scale(1) !important;
+    }
+}

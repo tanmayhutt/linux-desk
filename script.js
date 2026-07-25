@@ -348,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const header = win.querySelector('.win-header');
         if (!header) return;
 
-        header.addEventListener('mousedown', (e) => {
+        const handleDragStart = (e) => {
             // Ignore if clicking on or near the control buttons
             if (e.target.closest('.win-controls')) return;
             
@@ -365,21 +365,27 @@ document.addEventListener('DOMContentLoaded', () => {
             initialLeft = matrix.m41;
             initialTop = matrix.m42;
             
-            startX = e.clientX;
-            startY = e.clientY;
-        });
+            startX = e.clientX || (e.touches && e.touches[0].clientX);
+            startY = e.clientY || (e.touches && e.touches[0].clientY);
+        };
+
+        header.addEventListener('mousedown', handleDragStart);
+        header.addEventListener('touchstart', handleDragStart, {passive: true});
     });
 
-    document.addEventListener('mousemove', (e) => {
+    const handleDragMove = (e) => {
         if (!isDragging || !dragTarget) return;
         
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
+        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+        
+        const dx = clientX - startX;
+        const dy = clientY - startY;
         
         dragTarget.style.transform = `translate(${initialLeft + dx}px, ${initialTop + dy}px) scale(1)`;
-    });
+    };
 
-    document.addEventListener('mouseup', () => {
+    const handleDragEnd = () => {
         if (dragTarget) {
             // Restore transition when drag ends
             dragTarget.style.transition = '';
@@ -388,7 +394,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         isDragging = false;
         dragTarget = null;
-    });
+    };
+
+    document.addEventListener('mousemove', handleDragMove);
+    document.addEventListener('touchmove', handleDragMove, {passive: true});
+
+    document.addEventListener('mouseup', handleDragEnd);
+    document.addEventListener('touchend', handleDragEnd);
 
     /* ─── 4. CUSTOM CONTEXT MENU ─── */
     const ctxMenu = document.getElementById('context-menu');
