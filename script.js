@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        dateEl.textContent = `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`;
+        dateEl.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
     }
     setInterval(updateTime, 1000);
     updateTime();
@@ -96,8 +96,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Capture Wofi once for animations
     setTimeout(() => {
         if (window.html2canvas) {
+            const oldOp = wofiLauncher.style.opacity;
+            const oldMargin = wofiLauncher.style.marginTop;
+            wofiLauncher.style.opacity = '1';
+            wofiLauncher.style.marginTop = '-9999px'; // Move off-screen to avoid visual flash
             html2canvas(wofiLauncher, { backgroundColor: null }).then(canvas => {
                 wofiImage = canvas;
+                wofiLauncher.style.opacity = oldOp;
+                wofiLauncher.style.marginTop = oldMargin;
             });
         }
     }, 1000);
@@ -431,6 +437,23 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
         const activeCard = document.querySelector(`.theme-card[data-theme-id="${themeId}"]`);
         if (activeCard) activeCard.classList.add('active');
+
+        // Re-capture Wofi for the Genie animation so it matches the new theme
+        setTimeout(() => {
+            if (window.html2canvas) {
+                const wofiL = document.getElementById('wofi-launcher');
+                const oldOp = wofiL.style.opacity;
+                const oldMargin = wofiL.style.marginTop;
+                wofiL.style.opacity = '1';
+                wofiL.style.marginTop = '-9999px'; // Move off-screen to avoid visual flash
+                
+                html2canvas(wofiL, { backgroundColor: null }).then(canvas => {
+                    wofiImage = canvas;
+                    wofiL.style.opacity = oldOp;
+                    wofiL.style.marginTop = oldMargin;
+                });
+            }
+        }, 300);
     }
 
     function cycleTheme() {
@@ -811,4 +834,117 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // GitHub always serves latest avatar at this URL — auto-syncs on PFP change
     img.src = `https://avatars.githubusercontent.com/u/89214022?v=${Date.now()}&s=120`;
+})();
+
+/* ─── 8. REAL & FAKE SYSTEM MONITOR ANIMATION ─── */
+(() => {
+    // Top Waybar Elements
+    const wbCpu = document.querySelector('#sys-cpu .val');
+    const wbRam = document.querySelector('#sys-ram .val');
+    const wbNet = document.querySelector('#sys-net .val');
+    const wbLang = document.querySelector('#sys-lang .val');
+    const wbBat = document.querySelector('#sys-battery .val');
+    const batIcon = document.getElementById('bat-icon');
+
+    // Btop Window Elements
+    const btopCpu = document.getElementById('btop-cpu');
+    const btopMem = document.getElementById('btop-mem');
+    const btopNet = document.getElementById('btop-net');
+    const btopTableRows = document.querySelectorAll('#win-btop tbody tr');
+
+    if (!btopCpu || !btopMem || !btopNet) return;
+
+    // --- REAL DATA ---
+    const logicalCores = navigator.hardwareConcurrency || 6;
+    const deviceMemory = navigator.deviceMemory || 16;
+    const lang = navigator.language ? navigator.language.split('-')[0].toUpperCase() : 'EN';
+    const connectionType = (navigator.connection && navigator.connection.effectiveType) ? navigator.connection.effectiveType.toUpperCase() : '4G';
+
+    // Update static real data in waybar
+    if (wbCpu) wbCpu.textContent = `${logicalCores}c`;
+    if (wbRam) wbRam.textContent = `${deviceMemory}G`;
+    if (wbLang) wbLang.textContent = `${lang}`;
+    if (wbNet) wbNet.textContent = `${connectionType}`;
+
+    // Update real battery data
+    if (navigator.getBattery) {
+        navigator.getBattery().then(battery => {
+            const updateBattery = () => {
+                const level = Math.round(battery.level * 100);
+                const charging = battery.charging;
+                
+                if (wbBat) wbBat.textContent = `${level}%`;
+                if (batIcon) batIcon.className = charging ? 'ri-battery-charge-line' : 'ri-battery-line';
+
+                window.systemBatteryLevel = level;
+                window.systemBatteryCharging = charging;
+            };
+            updateBattery();
+            battery.addEventListener('levelchange', updateBattery);
+            battery.addEventListener('chargingchange', updateBattery);
+        });
+    }
+
+    // --- FAKE & RANDOMIZED DATA ---
+    function getBar(percentage, length = 15) {
+        const filled = Math.round((percentage / 100) * length);
+        const bar = '|'.repeat(filled) + ' '.repeat(length - filled);
+        return `[${bar}]`;
+    }
+
+    setInterval(() => {
+        // Randomize CPU between 15% and 85%
+        const cpu = Math.floor(Math.random() * 70) + 15;
+        btopCpu.innerHTML = `CPU ${getBar(cpu)} ${cpu}%  (${logicalCores}c)`;
+        if (wbCpu) wbCpu.textContent = `${cpu}%`; // Update Waybar
+
+        // Randomize MEM between 60% and 90%
+        const mem = Math.floor(Math.random() * 30) + 60;
+        btopMem.innerHTML = `MEM ${getBar(mem)} ${mem}% (${deviceMemory}G)`;
+        if (wbRam) wbRam.textContent = `${mem}%`; // Update Waybar
+
+        // Randomize NET (Using real connection downlink if available)
+        let baseDown = 5;
+        if (navigator.connection && navigator.connection.downlink) {
+            baseDown = navigator.connection.downlink / 8; // Convert Mbps to MB/s
+        }
+        // Slightly oscillate around the real base download speed
+        const down = Math.max(0, baseDown + (Math.random() * 2 - 1)).toFixed(1);
+        const up = Math.max(0, (baseDown / 4) + (Math.random() * 1 - 0.5)).toFixed(1); // Fake upload relative to down
+        btopNet.innerHTML = `NET ▼ ${down} MB/s ▲ ${up} MB/s (${connectionType})`;
+        if (wbNet) wbNet.textContent = `▼ ${down} MB/s`; // Update Waybar
+
+        // Update remaining stats
+        const batLvl = window.systemBatteryLevel || 100;
+        const batChg = window.systemBatteryCharging ? '(Charging)' : '(Discharging)';
+        const dskEl = btopNet.nextElementSibling;
+        const lngBatEl = dskEl.nextElementSibling;
+        
+        const dsk = 32 + Math.floor(Math.random() * 3);
+        dskEl.innerHTML = `DSK ${getBar(dsk, 6)} ${dsk}%`;
+        lngBatEl.innerHTML = `LNG: ${lang} | BAT: ${batLvl}% ${batChg}`;
+
+        // Randomize process table CPU/MEM
+        btopTableRows.forEach(row => {
+            const tds = row.querySelectorAll('td');
+            if (tds.length >= 8) {
+                const proc = tds[8].textContent.trim();
+                let baseCpu = 1, baseMem = 1;
+                
+                if (proc === 'Hyprland') { baseCpu = 8; baseMem = 4; }
+                else if (proc === 'waybar') { baseCpu = 1; baseMem = 0.5; }
+                else if (proc === 'btop') { baseCpu = 4; baseMem = 1.5; }
+                else if (proc.includes('wofi')) { baseCpu = 2; baseMem = 1; }
+                else if (proc.includes('whoami')) { baseCpu = 1.5; baseMem = 1; }
+                else if (proc.includes('kitty')) { baseCpu = 2; baseMem = 1.5; } // other kitties
+                else if (proc.includes('theme')) { baseCpu = 0.5; baseMem = 0.5; }
+
+                const randCpu = (baseCpu + (Math.random() * 2 - 1)).toFixed(1);
+                const randMem = (baseMem + (Math.random() * 1 - 0.5)).toFixed(1);
+                
+                tds[6].textContent = Math.max(0.1, randCpu).toFixed(1);
+                tds[7].textContent = Math.max(0.1, randMem).toFixed(1);
+            }
+        });
+    }, 2000);
 })();
