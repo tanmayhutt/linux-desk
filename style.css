@@ -267,12 +267,15 @@ a { color: inherit; text-decoration: none; }
     box-shadow: 0 15px 40px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.05);
     z-index: 100;
     opacity: 0; pointer-events: none;
+    transform: translate(-50%, -48%) scale(0.98);
+    transition: opacity 160ms ease, transform 160ms ease;
     display: flex; flex-direction: column;
 }
 
 #wofi-launcher.active {
     opacity: 1;
     pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
 }
 
 .wofi-search {
@@ -497,14 +500,12 @@ a.ls-row:hover { background: rgba(255,255,255,0.05); }
     }
 
     /* Wofi Menu */
-    .wofi-menu {
+    #wofi-launcher {
         width: 90vw !important;
-        left: 5vw !important;
-        transform: translateX(0) translateY(-10px);
-        margin-left: 0;
+        max-height: calc(100vh - 80px);
     }
-    .wofi-menu.active {
-        transform: translateX(0) translateY(0);
+    #wofi-launcher.active {
+        transform: translate(-50%, -50%) scale(1);
     }
     .wofi-search input {
         font-size: 14px;
@@ -539,5 +540,13 @@ a.ls-row:hover { background: rgba(255,255,255,0.05); }
     }
     .hypr-win.active {
         transform: translate(-50%, -50%) scale(1) !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

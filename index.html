@@ -5,7 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tanmay Tiwari — hyprland-web</title>
-    <meta name="description" content="Tanmay Tiwari's Portfolio - Hyprland Theme">
+    <meta name="description" content="An interactive Hyprland-inspired portfolio by Tanmay Tiwari, with workspaces, terminal tools, themes, and selected projects.">
+    <meta name="theme-color" content="#050d14">
+    <link rel="canonical" href="https://tanmayhutt.github.io/linux-desk/">
+    <meta property="og:title" content="Tanmay Tiwari — Linux Desk">
+    <meta property="og:description" content="An interactive Hyprland-inspired portfolio with workspaces, terminal tools, themes, and selected projects.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tanmayhutt.github.io/linux-desk/">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +36,6 @@
                 <button class="ws" data-ws="2">2</button>
                 <button class="ws" data-ws="3">3</button>
                 <button class="ws" data-ws="4">4</button>
-                <button class="ws ws-add" id="ws-add" aria-label="Add Workspace"><i class="ri-add-line"></i></button>
             </nav>
             <span class="wb-window-title" id="wb-title"></span>
         </div>
@@ -118,7 +123,7 @@
                                         class="c-purple">hypr</span></p>
                                 <p class="nf-sep">-----------</p>
                                 <p><span class="c-blue">OS:</span> Arch Linux x86_64</p>
-                                <p><span class="c-blue">Host:</span> Developer / Builder</p>
+                                <p><span class="c-blue">Host:</span> Student / Builder</p>
                                 <p><span class="c-blue">Kernel:</span> 6.8.0-zen1-1-zen</p>
                                 <p><span class="c-blue">Uptime:</span> 24/7 Building</p>
                                 <p><span class="c-blue">Packages:</span> 516 (commits/yr)</p>
@@ -139,8 +144,8 @@
                                 class="p-cmd">cat bio.txt</span>
                         </div>
                         <div class="out-line">
-                            I build tools that turn data into art, monitor the physical world,<br>
-                            and push the limits of what software can do. Available for collaboration.
+                            I build web products, developer tools, small systems,<br>
+                            and interface experiments. Always learning, usually building.
                         </div>
                         <div class="prompt-line mt-2">
                             <span class="p-user">tanmay@hypr</span><span class="p-dir">~/whoami</span> <span
@@ -251,6 +256,7 @@
                         style="background: rgba(10,10,10,0.9); font-family: var(--font-mono); font-size: 13px; color: #fff;">
                         <div style="display: flex; gap: 10px; margin-bottom: 10px;">
                             <div style="flex: 1; border: 1px solid var(--c-gray); border-radius: 4px; padding: 10px;">
+                                <div class="c-gray" style="margin-bottom: 8px;">Simulated workload. Device capabilities are shown in the Waybar.</div>
                                 <div id="btop-cpu" style="color: var(--c-green); margin-bottom: 5px;">CPU [|||||||||||||| ] 55%  (6c)</div>
                                 <div id="btop-mem" style="color: var(--c-blue); margin-bottom: 5px;">MEM [|||||||||||||||||| ] 78% (16G)</div>
                                 <div id="btop-swp" style="color: var(--c-purple);">SWP [|| ] 5%</div>
@@ -512,10 +518,12 @@
                             <p class="c-green fw-bold">Connection established.</p>
                             <p class="mt-2">Available protocols:</p>
                             <ul class="c-list">
-                                <li><a href="https://github.com/tanmayhutt" target="_blank"><i
+                                <li><a href="https://github.com/tanmayhutt" target="_blank" rel="noopener noreferrer"><i
                                             class="ri-github-fill"></i> GitHub -> github.com/tanmayhutt</a></li>
-                                <li><a href="mailto:tiwaritanmay@gmail.com" target="_blank"><i class="ri-mail-fill"></i>
+                                <li><a href="mailto:tiwaritanmay1021@gmail.com"><i class="ri-mail-fill"></i>
                                         Email -> Initiate Handshake</a></li>
+                                <li><a href="https://tanmaytiwari.me"><i class="ri-home-4-fill"></i>
+                                        Main portfolio -> tanmaytiwari.me</a></li>
                             </ul>
                         </div>
 
@@ -539,7 +547,6 @@
         <div class="cm-item"><i class="ri-settings-3-line"></i> Hyprland Settings</div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="script.js"></script>
 </body>
 

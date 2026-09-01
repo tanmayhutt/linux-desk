@@ -91,117 +91,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const wofiInput = document.getElementById('wofi-input');
     const wofiItems = document.querySelectorAll('.wofi-item');
 
-    let wofiImage = null;
-
-    // Capture Wofi once for animations
-    setTimeout(() => {
-        if (window.html2canvas) {
-            const oldOp = wofiLauncher.style.opacity;
-            const oldMargin = wofiLauncher.style.marginTop;
-            wofiLauncher.style.opacity = '1';
-            wofiLauncher.style.marginTop = '-9999px'; // Move off-screen to avoid visual flash
-            html2canvas(wofiLauncher, { backgroundColor: null }).then(canvas => {
-                wofiImage = canvas;
-                wofiLauncher.style.opacity = oldOp;
-                wofiLauncher.style.marginTop = oldMargin;
-            });
-        }
-    }, 1000);
-
-    function playGenie(isOpening, callback) {
-        if (!wofiImage || !window.html2canvas) {
-            callback();
-            return;
-        }
-        
-        const dpr = window.devicePixelRatio || 1;
-        const canvas = document.createElement('canvas');
-        canvas.width = window.innerWidth * dpr;
-        canvas.height = window.innerHeight * dpr;
-        canvas.style.width = window.innerWidth + 'px';
-        canvas.style.height = window.innerHeight + 'px';
-        canvas.style.position = 'fixed';
-        canvas.style.top = '0';
-        canvas.style.left = '0';
-        canvas.style.zIndex = '9999';
-        canvas.style.pointerEvents = 'none';
-        document.body.appendChild(canvas);
-        const ctx = canvas.getContext('2d', { alpha: true });
-        ctx.scale(dpr, dpr);
-
-        const btnRect = archLogo.getBoundingClientRect();
-        const targetX = btnRect.left + btnRect.width / 2;
-        const targetY = btnRect.top + btnRect.height / 2;
-
-        const startX = window.innerWidth / 2;
-        const startY = window.innerHeight / 2;
-        
-        // Use CSS dimensions
-        const cssW = wofiLauncher.offsetWidth;
-        const cssH = wofiLauncher.offsetHeight;
-        // Image to CSS scale factor (html2canvas scales up by dpr)
-        const scaleY = wofiImage.height / cssH;
-
-        let startTime = null;
-        const duration = 500;
-
-        function animate(time) {
-            if (!startTime) startTime = time;
-            let progress = (time - startTime) / duration;
-            if (progress > 1) progress = 1;
-
-            const ease = progress < 0.5 ? 2 * progress * progress : -1 + (4 - 2 * progress) * progress;
-            const t = isOpening ? 1 - ease : ease;
-
-            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
-            for (let y = 0; y < cssH; y += 2) {
-                const yPercent = 1 - (y / cssH); 
-                const sliceProgress = Math.min(1, Math.max(0, t * (1 + yPercent * 0.8) - yPercent * 0.4));
-
-                const currentW = cssW * (1 - sliceProgress);
-                const currentH = 2; // draw 2px chunks for performance
-
-                const centerX = startX + (targetX - startX) * sliceProgress;
-                const yOffset = (y - cssH / 2) * (1 - sliceProgress);
-                const centerY = startY + yOffset + (targetY - startY) * Math.pow(sliceProgress, 1.2);
-
-                if (currentW > 0.5) {
-                    ctx.drawImage(
-                        wofiImage, 
-                        0, y * scaleY, wofiImage.width, 2 * scaleY, 
-                        centerX - currentW / 2, centerY, currentW, currentH
-                    );
-                }
-            }
-
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                document.body.removeChild(canvas);
-                callback();
-            }
-        }
-        requestAnimationFrame(animate);
-    }
-
     function toggleWofi() {
         if (wofiLauncher.classList.contains('active')) {
             wofiLauncher.classList.remove('active');
-            
-            // Restore title to currently active window (or empty if none open)
             updateWaybarTitle();
-            
-            playGenie(false, () => {});
         } else {
-            playGenie(true, () => {
-                wofiLauncher.classList.add('active');
-                wofiInput.value = '';
-                wofiInput.focus();
-                wofiItems.forEach(item => item.style.display = 'flex');
-                wofiSelectedIndex = 0;
-                updateWofiSelection();
-            });
+            wofiLauncher.classList.add('active');
+            wofiInput.value = '';
+            wofiInput.focus();
+            wofiItems.forEach(item => item.style.display = 'flex');
+            wofiSelectedIndex = 0;
+            updateWofiSelection();
         }
     }
 
@@ -438,22 +338,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const activeCard = document.querySelector(`.theme-card[data-theme-id="${themeId}"]`);
         if (activeCard) activeCard.classList.add('active');
 
-        // Re-capture Wofi for the Genie animation so it matches the new theme
-        setTimeout(() => {
-            if (window.html2canvas) {
-                const wofiL = document.getElementById('wofi-launcher');
-                const oldOp = wofiL.style.opacity;
-                const oldMargin = wofiL.style.marginTop;
-                wofiL.style.opacity = '1';
-                wofiL.style.marginTop = '-9999px'; // Move off-screen to avoid visual flash
-                
-                html2canvas(wofiL, { backgroundColor: null }).then(canvas => {
-                    wofiImage = canvas;
-                    wofiL.style.opacity = oldOp;
-                    wofiL.style.marginTop = oldMargin;
-                });
-            }
-        }, 300);
     }
 
     function cycleTheme() {
@@ -661,31 +545,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateWaybarTitle();
             }
         });
-    });
-
-    // Handle Workspace Adding
-    const wsAddBtn = document.getElementById('ws-add');
-    const wsContainer = document.querySelector('.wb-workspaces');
-    let totalWorkspaces = 4;
-    
-    wsAddBtn.addEventListener('click', () => {
-        if (totalWorkspaces >= 7) return;
-        totalWorkspaces++;
-        const newWsBtn = document.createElement('button');
-        newWsBtn.className = 'ws';
-        newWsBtn.dataset.ws = totalWorkspaces.toString();
-        newWsBtn.textContent = totalWorkspaces;
-        
-        newWsBtn.addEventListener('click', () => {
-            goToWorkspace(parseInt(newWsBtn.dataset.ws));
-        });
-        
-        wsContainer.insertBefore(newWsBtn, wsAddBtn);
-        goToWorkspace(totalWorkspaces);
-        
-        if (totalWorkspaces >= 7) {
-            wsAddBtn.style.display = 'none';
-        }
     });
 
     // Terminal Logic
@@ -896,12 +755,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Randomize CPU between 15% and 85%
         const cpu = Math.floor(Math.random() * 70) + 15;
         btopCpu.innerHTML = `CPU ${getBar(cpu)} ${cpu}%  (${logicalCores}c)`;
-        if (wbCpu) wbCpu.textContent = `${cpu}%`; // Update Waybar
 
         // Randomize MEM between 60% and 90%
         const mem = Math.floor(Math.random() * 30) + 60;
         btopMem.innerHTML = `MEM ${getBar(mem)} ${mem}% (${deviceMemory}G)`;
-        if (wbRam) wbRam.textContent = `${mem}%`; // Update Waybar
 
         // Randomize NET (Using real connection downlink if available)
         let baseDown = 5;
@@ -912,7 +769,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const down = Math.max(0, baseDown + (Math.random() * 2 - 1)).toFixed(1);
         const up = Math.max(0, (baseDown / 4) + (Math.random() * 1 - 0.5)).toFixed(1); // Fake upload relative to down
         btopNet.innerHTML = `NET ▼ ${down} MB/s ▲ ${up} MB/s (${connectionType})`;
-        if (wbNet) wbNet.textContent = `▼ ${down} MB/s`; // Update Waybar
 
         // Update remaining stats
         const batLvl = window.systemBatteryLevel || 100;
