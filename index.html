@@ -3,548 +3,460 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tanmay Tiwari — hyprland-web</title>
-    <meta name="description" content="An interactive Hyprland-inspired portfolio by Tanmay Tiwari, with workspaces, terminal tools, themes, and selected projects.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Tanmay Tiwari | Linux Desk</title>
+    <meta name="description" content="An interactive Hyprland-inspired portfolio by Tanmay Tiwari, with workspaces, a working terminal, themes, and selected projects.">
     <meta name="theme-color" content="#050d14">
-    <link rel="canonical" href="https://tanmayhutt.github.io/linux-desk/">
-    <meta property="og:title" content="Tanmay Tiwari — Linux Desk">
-    <meta property="og:description" content="An interactive Hyprland-inspired portfolio with workspaces, terminal tools, themes, and selected projects.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23050d14'/%3E%3Cpath d='M9 11l5 5-5 5' fill='none' stroke='%2333ccff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M16 22h7' stroke='%2300ff99' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
+    <link rel="canonical" href="https://tanmaytiwari.me/linux-desk/">
+    <meta property="og:title" content="Tanmay Tiwari | Linux Desk">
+    <meta property="og:description" content="An interactive Hyprland-inspired portfolio with workspaces, a working terminal, themes, and selected projects.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://tanmayhutt.github.io/linux-desk/">
+    <meta property="og:url" content="https://tanmaytiwari.me/linux-desk/">
+    <meta property="og:image" content="https://github.com/tanmayhutt.png?size=460">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <noscript>
+        <style>
+            body { overflow: auto; height: auto; }
+            .waybar { position: sticky; }
+            .desktop, .desktop-track, .workspace { position: static; width: auto; height: auto; display: block; overflow: visible; transform: none; }
+            .desktop-track { padding: 56px 12px 24px; display: grid; gap: 16px; }
+            .hypr-win { display: flex !important; position: relative !important; left: auto !important; top: auto !important; width: auto !important; max-width: 900px; margin: 0 auto 16px; opacity: 1; }
+            .nav-arrow, #wofi-launcher, .win-controls, .wb-workspaces, .wb-right, .resize-handle { display: none !important; }
+            #win-cli, #win-btop, #win-theme, .wb-logo, .quick-links button { display: none !important; }
+        </style>
+    </noscript>
 </head>
 
 <body>
-
-    <!-- OS Background -->
-    <div class="scanlines"></div>
-    <div class="noise"></div>
+    <!-- Wallpaper layers -->
+    <div class="wallpaper" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="noise" aria-hidden="true"></div>
 
     <!-- WAYBAR -->
-    <header class="waybar">
+    <header class="waybar" id="waybar">
         <div class="wb-left">
-            <button class="wb-logo wofi-btn" aria-label="App Launcher"><i class="ri-search-line"></i> Wofi</button>
-            <nav class="wb-workspaces">
-                <button class="ws active" data-ws="1">1</button>
-                <button class="ws" data-ws="2">2</button>
-                <button class="ws" data-ws="3">3</button>
-                <button class="ws" data-ws="4">4</button>
+            <button class="wb-logo" id="wofi-btn" type="button" aria-label="Open app launcher" aria-controls="wofi-launcher" aria-expanded="true">
+                <svg class="arch-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.39.605C10.376 3.092 9.764 4.72 8.635 7.132c.693.734 1.543 1.589 2.923 2.554-1.484-.61-2.496-1.224-3.252-1.86C6.86 10.842 4.596 15.138 0 23.395c3.612-2.085 6.412-3.37 9.021-3.862a6.61 6.61 0 0 1-.171-1.547l.003-.115c.058-2.315 1.261-4.095 2.687-3.973 1.426.12 2.534 2.096 2.478 4.409a6.52 6.52 0 0 1-.146 1.243c2.58.505 5.352 1.787 8.914 3.844-.702-1.293-1.33-2.459-1.929-3.57-.943-.73-1.926-1.682-3.933-2.713 1.38.359 2.367.772 3.137 1.234-6.09-11.334-6.582-12.84-8.67-17.74Z"/></svg>
+                <span class="wb-logo-label">wofi</span>
+            </button>
+            <nav class="wb-workspaces" aria-label="Workspaces">
+                <button class="ws active" type="button" data-ws="1" aria-label="Workspace 1" aria-current="true">1</button>
+                <button class="ws" type="button" data-ws="2" aria-label="Workspace 2">2</button>
+                <button class="ws" type="button" data-ws="3" aria-label="Workspace 3">3</button>
+                <button class="ws" type="button" data-ws="4" aria-label="Workspace 4">4</button>
             </nav>
-            <span class="wb-window-title" id="wb-title"></span>
+            <div class="wb-tasks" id="wb-tasks" aria-label="Minimized windows"></div>
+            <span class="wb-window-title" id="wb-title" aria-live="polite"></span>
         </div>
 
         <div class="wb-center">
-            <span class="wb-clock"><i class="ri-calendar-line"></i> <span id="wb-date"></span> <span
-                    id="wb-time"></span></span>
+            <span class="wb-clock"><i class="ri-time-line" aria-hidden="true"></i> <span id="wb-date"></span> <span id="wb-time" class="wb-time"></span></span>
         </div>
 
         <div class="wb-right">
-            <span class="wb-sys clickable" id="sys-theme" title="Themes"><i class="ri-palette-line"></i></span>
-            <span class="wb-sys clickable" id="sys-cpu" title="Logical Cores"><i class="ri-cpu-line"></i> <span
-                    class="val">6c</span></span>
-            <span class="wb-sys clickable" id="sys-ram" title="Device Memory"><i class="ri-ram-2-line"></i> <span
-                    class="val">16G</span></span>
-            <span class="wb-sys clickable" id="sys-net" title="Connection"><i class="ri-wifi-line"></i> <span
-                    class="val">4G</span></span>
-            <span class="wb-sys" id="sys-lang" title="Language"><i class="ri-global-line"></i> <span
-                    class="val">EN</span></span>
-            <span class="wb-tray" id="sys-battery" title="Battery">
-                <i class="ri-battery-line" id="bat-icon"></i> <span class="val">100%</span>
-            </span>
+            <button class="wb-sys" type="button" id="sys-theme" title="Themes" aria-label="Open themes"><i class="ri-palette-line" aria-hidden="true"></i></button>
+            <button class="wb-sys" type="button" id="sys-cpu" title="Logical cores reported by your browser" aria-label="CPU cores, open system monitor"><i class="ri-cpu-line" aria-hidden="true"></i> <span class="val">--</span></button>
+            <button class="wb-sys" type="button" id="sys-ram" title="Device memory reported by your browser" aria-label="Device memory, open system monitor"><i class="ri-ram-2-line" aria-hidden="true"></i> <span class="val">--</span></button>
+            <button class="wb-sys" type="button" id="sys-net" title="Connection reported by your browser" aria-label="Network, open system monitor"><i class="ri-wifi-line" aria-hidden="true"></i> <span class="val">--</span></button>
+            <span class="wb-sys wb-static" id="sys-lang" title="Browser language"><i class="ri-global-line" aria-hidden="true"></i> <span class="val">--</span></span>
+            <button class="wb-sys" type="button" id="sys-battery" title="Battery" aria-label="Battery, open system monitor"><i class="ri-plug-line" id="bat-icon" aria-hidden="true"></i> <span class="val">AC</span></button>
+            <a class="wb-sys wb-home" href="https://tanmaytiwari.me/" title="Back to tanmaytiwari.me" aria-label="Back to the main portfolio"><i class="ri-shut-down-line" aria-hidden="true"></i></a>
         </div>
     </header>
 
-    <!-- DESKTOP ENVIRONMENT -->
+    <!-- DESKTOP -->
     <main class="desktop" id="desktop">
-        <!-- NAVIGATION ARROWS -->
-        <div class="nav-arrow nav-left" id="nav-left"><i class="ri-arrow-left-s-line"></i></div>
-        <div class="nav-arrow nav-right" id="nav-right"><i class="ri-arrow-right-s-line"></i></div>
+        <button class="nav-arrow nav-left" id="nav-left" type="button" aria-label="Previous workspace"><i class="ri-arrow-left-s-line" aria-hidden="true"></i></button>
+        <button class="nav-arrow nav-right" id="nav-right" type="button" aria-label="Next workspace"><i class="ri-arrow-right-s-line" aria-hidden="true"></i></button>
 
-        <!-- WOFI APP LAUNCHER -->
-        <div id="wofi-launcher" class="active">
+        <div class="ws-indicator" id="ws-indicator" aria-hidden="true">1</div>
+
+        <!-- WOFI LAUNCHER -->
+        <div id="wofi-launcher" class="active" role="dialog" aria-label="App launcher">
             <div class="wofi-search">
-                <i class="ri-search-line"></i>
-                <input type="text" placeholder="Type to search..." id="wofi-input" autocomplete="off">
+                <i class="ri-search-line" aria-hidden="true"></i>
+                <input type="text" placeholder="drun: search apps and links" id="wofi-input" autocomplete="off" spellcheck="false" aria-label="Search apps and links" aria-controls="wofi-list">
             </div>
-            <div class="wofi-list">
-                <div class="wofi-item" data-app="win-term" data-title="tanmay@hypr: ~/whoami">
-                    <i class="ri-terminal-box-line"></i> About (whoami)
-                </div>
-                <div class="wofi-item" data-app="win-connect" data-title="tanmay@hypr: ~/contact">
-                    <i class="ri-mail-send-line"></i> Contact
-                </div>
-                <div class="wofi-item" data-app="win-projects" data-title="tanmay@hypr: ~/projects">
-                    <i class="ri-folder-zip-line"></i> Projects
-                </div>
-                <div class="wofi-item" data-app="win-btop" data-title="kitty ~ btop">
-                    <i class="ri-dashboard-3-line"></i> System Monitor (btop)
-                </div>
-                <div class="wofi-item" data-app="win-stack" data-title="tanmay@hypr: ~/stack">
-                    <i class="ri-code-box-line"></i> Tech Stack
-                </div>
-                <div class="wofi-item" data-app="win-cli" data-title="tanmay@hypr: ~$">
-                    <i class="ri-terminal-window-line"></i> Terminal
-                </div>
-                <div class="wofi-item" data-app="win-theme" data-title="Themes">
-                    <i class="ri-palette-line"></i> Themes
-                </div>
+            <div class="wofi-list" id="wofi-list">
+                <p class="wofi-group">apps</p>
+                <button class="wofi-item" type="button" data-app="win-about" data-title="kitty ~ whoami">
+                    <i class="ri-user-3-line" aria-hidden="true"></i><span>About</span><small>whoami</small>
+                </button>
+                <button class="wofi-item" type="button" data-app="win-connect" data-title="kitty ~ contact">
+                    <i class="ri-mail-send-line" aria-hidden="true"></i><span>Contact</span><small>ssh</small>
+                </button>
+                <button class="wofi-item" type="button" data-app="win-projects" data-title="kitty ~ projects">
+                    <i class="ri-folder-3-line" aria-hidden="true"></i><span>Projects</span><small>ls -la</small>
+                </button>
+                <button class="wofi-item" type="button" data-app="win-btop" data-title="kitty ~ btop">
+                    <i class="ri-dashboard-3-line" aria-hidden="true"></i><span>System monitor</span><small>btop</small>
+                </button>
+                <button class="wofi-item" type="button" data-app="win-stack" data-title="kitty ~ stack">
+                    <i class="ri-braces-line" aria-hidden="true"></i><span>Tech stack</span><small>jq</small>
+                </button>
+                <button class="wofi-item" type="button" data-app="win-cli" data-title="kitty ~ zsh">
+                    <i class="ri-terminal-box-line" aria-hidden="true"></i><span>Terminal</span><small>zsh</small>
+                </button>
+                <button class="wofi-item" type="button" data-app="win-theme" data-title="hyprpaper ~ themes">
+                    <i class="ri-palette-line" aria-hidden="true"></i><span>Themes</span><small>hyprpaper</small>
+                </button>
+                <p class="wofi-group">links</p>
+                <a class="wofi-item" href="https://tanmaytiwari.me/" data-title="tanmaytiwari.me">
+                    <i class="ri-home-5-line" aria-hidden="true"></i><span>Main portfolio</span><small>tanmaytiwari.me</small>
+                </a>
+                <a class="wofi-item" href="/nokia-desk/" data-title="nokia-desk">
+                    <i class="ri-smartphone-line" aria-hidden="true"></i><span>Nokia desk</span><small>desk</small>
+                </a>
+                <a class="wofi-item" href="https://tanmaytiwari.me/resume/" target="_blank" rel="noopener noreferrer" data-title="resume">
+                    <i class="ri-file-user-line" aria-hidden="true"></i><span>Resume</span><small>opens new tab</small>
+                </a>
+                <a class="wofi-item" href="/spotify-desk/" data-title="spotify-desk">
+                    <i class="ri-disc-line" aria-hidden="true"></i><span>Spotify desk</span><small>desk</small>
+                </a>
+                <p class="wofi-empty" id="wofi-empty" hidden>No matches. Try "projects" or "terminal".</p>
+            </div>
+            <div class="wofi-foot" aria-hidden="true">
+                <span><kbd>Super</kbd> toggle</span>
+                <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> select</span>
+                <span><kbd>Enter</kbd> open</span>
+                <span><kbd>Esc</kbd> close</span>
             </div>
         </div>
 
         <div class="desktop-track" id="desktop-track">
             <!-- WORKSPACE 1 -->
-            <div class="workspace" id="ws-1">
-                <!-- WINDOW: TERMINAL -->
-                <div class="hypr-win hidden" id="win-term"
-                    style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 600px;"
-                    data-title="tanmay@hypr: ~/whoami">
-                    <div class="win-header">
-                        <div class="win-title">kitty ~ tanmay@hypr: ~/whoami</div>
+            <div class="workspace" id="ws-1" data-ws="1">
+
+                <!-- WINDOW: ABOUT -->
+                <section class="hypr-win" id="win-about" data-w="620" data-name="whoami" data-icon="ri-user-3-line" aria-labelledby="title-about" tabindex="-1">
+                    <header class="win-header">
                         <div class="win-controls">
-                            <div class="wc close"></div>
-                            <div class="wc min"></div>
-                            <div class="wc max"></div>
+                            <button class="wc close" type="button" aria-label="Close whoami"></button>
+                            <button class="wc min" type="button" aria-label="Minimize whoami"></button>
+                            <button class="wc max" type="button" aria-label="Maximize whoami"></button>
                         </div>
-                    </div>
+                        <h2 class="win-title" id="title-about">kitty ~ whoami</h2>
+                    </header>
                     <div class="win-content term-content">
+                        <div class="prompt-line">
+                            <span class="p-user">tanmay@hypr</span><span class="p-dir">~</span><span class="p-cmd">fastfetch</span>
+                        </div>
                         <div class="neofetch">
-                            <div class="nf-ascii" id="nf-ascii-art">
-                                <!-- Generated by JS on page load -->
-                            </div>
+                            <div class="nf-ascii" id="nf-ascii-art" aria-hidden="true"></div>
                             <div class="nf-info">
-                                <p class="nf-title"><span class="c-blue">tanmay</span><span class="c-fg">@</span><span
-                                        class="c-purple">hypr</span></p>
-                                <p class="nf-sep">-----------</p>
-                                <p><span class="c-blue">OS:</span> Arch Linux x86_64</p>
-                                <p><span class="c-blue">Host:</span> Student / Builder</p>
-                                <p><span class="c-blue">Kernel:</span> 6.8.0-zen1-1-zen</p>
-                                <p><span class="c-blue">Uptime:</span> 24/7 Building</p>
-                                <p><span class="c-blue">Packages:</span> 516 (commits/yr)</p>
-                                <p><span class="c-blue">Shell:</span> zsh 5.9</p>
-                                <p><span class="c-blue">WM:</span> Hyprland</p>
-                                <p><span class="c-blue">Theme:</span> Tokyo Night Dark</p>
-                                <p><span class="c-blue">Terminal:</span> kitty</p>
-                                <div class="nf-colors">
-                                    <span class="bg-0"></span><span class="bg-1"></span><span class="bg-2"></span><span
-                                        class="bg-3"></span><span class="bg-4"></span><span class="bg-5"></span><span
-                                        class="bg-6"></span><span class="bg-7"></span>
+                                <p class="nf-title"><span class="c-blue">tanmay</span><span class="c-dim">@</span><span class="c-purple">hypr</span></p>
+                                <p class="nf-sep" aria-hidden="true">-----------</p>
+                                <p><span class="nf-key">Name</span> Tanmay Tiwari</p>
+                                <p><span class="nf-key">Role</span> Student / independent builder</p>
+                                <p><span class="nf-key">Focus</span> Full-stack, dev tools, Linux</p>
+                                <p><span class="nf-key">Now</span> Blend, Thwip</p>
+                                <p><span class="nf-key">OS</span> Arch Linux x86_64</p>
+                                <p><span class="nf-key">WM</span> Hyprland</p>
+                                <p><span class="nf-key">Shell</span> zsh</p>
+                                <p><span class="nf-key">Terminal</span> kitty</p>
+                                <p><span class="nf-key">Theme</span> <span id="nf-theme">Neon</span></p>
+                                <div class="nf-colors" aria-hidden="true">
+                                    <span style="background: var(--c-dim)"></span><span style="background: var(--c-red)"></span><span style="background: var(--c-green)"></span><span style="background: var(--c-yellow)"></span><span style="background: var(--c-blue)"></span><span style="background: var(--c-purple)"></span><span style="background: var(--c-cyan)"></span><span style="background: var(--c-main)"></span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="prompt-line mt-4">
-                            <span class="p-user">tanmay@hypr</span><span class="p-dir">~/whoami</span> <span
-                                class="p-cmd">cat bio.txt</span>
+                            <span class="p-user">tanmay@hypr</span><span class="p-dir">~</span><span class="p-cmd">cat bio.txt</span>
                         </div>
-                        <div class="out-line">
-                            I build web products, developer tools, small systems,<br>
-                            and interface experiments. Always learning, usually building.
+                        <p class="out-line bio">
+                            I'm a student and independent builder. I learn fastest by making real things,
+                            finding where they break, and refining them until the interaction feels right.
+                            My work moves between full-stack software, developer tools, self-hosted
+                            infrastructure, embedded hardware, interface design, and cinematic video editing.
+                        </p>
+                        <div class="quick-links">
+                            <button class="chip" type="button" data-open="win-projects"><i class="ri-folder-3-line" aria-hidden="true"></i> projects</button>
+                            <button class="chip" type="button" data-open="win-cli"><i class="ri-terminal-box-line" aria-hidden="true"></i> terminal</button>
+                            <button class="chip" type="button" data-open="win-connect"><i class="ri-mail-send-line" aria-hidden="true"></i> contact</button>
+                            <a class="chip" href="https://tanmaytiwari.me/resume/" target="_blank" rel="noopener noreferrer"><i class="ri-file-user-line" aria-hidden="true"></i> resume</a>
                         </div>
                         <div class="prompt-line mt-2">
-                            <span class="p-user">tanmay@hypr</span><span class="p-dir">~/whoami</span> <span
-                                class="p-cursor">█</span>
+                            <span class="p-user">tanmay@hypr</span><span class="p-dir">~</span><span class="p-cursor" aria-hidden="true"></span>
                         </div>
                     </div>
-                </div>
+                    <div class="resize-handle" aria-hidden="true"></div>
+                </section>
 
-                <!-- WINDOW: INTERACTIVE CLI -->
-                <div class="hypr-win hidden" id="win-cli" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 650px;" data-title="tanmay@hypr: ~$">
-                    <div class="win-header">
-                        <div class="win-title">kitty ~ tanmay@hypr: ~$</div>
+                <!-- WINDOW: TERMINAL -->
+                <section class="hypr-win" id="win-cli" data-w="660" data-h="440" data-name="zsh" data-icon="ri-terminal-box-line" aria-labelledby="title-cli" tabindex="-1">
+                    <header class="win-header">
                         <div class="win-controls">
-                            <div class="wc close"></div>
-                            <div class="wc min"></div>
-                            <div class="wc max"></div>
+                            <button class="wc close" type="button" aria-label="Close terminal"></button>
+                            <button class="wc min" type="button" aria-label="Minimize terminal"></button>
+                            <button class="wc max" type="button" aria-label="Maximize terminal"></button>
                         </div>
+                        <h2 class="win-title" id="title-cli">kitty ~ zsh</h2>
+                    </header>
+                    <div class="win-content term-content cli-content" id="cli-container">
+                        <div id="cli-output" role="log" aria-live="polite">
+                            <p class="out-line">Welcome to <span class="c-blue">hypr-web</span>. A tiny zsh that knows about Tanmay.</p>
+                            <p class="out-line c-dim">Type <span class="c-green">help</span> to list commands. Tab completes, arrow keys walk history.</p>
+                        </div>
+                        <form class="prompt-line cli-prompt" id="cli-form" autocomplete="off">
+                            <label class="p-user" for="cli-input">tanmay@hypr</label><span class="p-dir">~</span><span class="p-arrow" aria-hidden="true">$</span>
+                            <input type="text" id="cli-input" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command">
+                        </form>
                     </div>
-                    <div class="win-content term-content cli-content" style="height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;" id="cli-container">
-                        <div id="cli-output">
-                            <div class="out-line">Welcome to the Portfolio OS Terminal.</div>
-                            <div class="out-line">Type 'help' to see available commands.</div>
-                        </div>
-                        <div class="prompt-line" style="display: flex; align-items: center; gap: 6px;">
-                            <span class="p-user" style="color: var(--c-blue);">tanmay@hypr</span><span class="p-dir" style="color: var(--c-purple);">~$</span>
-                            <input type="text" id="cli-input" autocomplete="off" spellcheck="false" style="background: transparent; border: none; color: var(--c-main); font-family: var(--font-mono); font-size: 14px; flex-grow: 1; outline: none; padding: 0;">
-                        </div>
-                    </div>
-                </div>
+                    <div class="resize-handle" aria-hidden="true"></div>
+                </section>
 
                 <!-- WINDOW: THEMES -->
-                <div class="hypr-win hidden" id="win-theme"
-                    style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 600px;" data-title="Themes">
-                    <div class="win-header">
-                        <div class="win-title">kitty ~ Themes</div>
+                <section class="hypr-win" id="win-theme" data-w="560" data-name="themes" data-icon="ri-palette-line" aria-labelledby="title-theme" tabindex="-1">
+                    <header class="win-header">
                         <div class="win-controls">
-                            <div class="wc close"></div>
-                            <div class="wc min"></div>
-                            <div class="wc max"></div>
+                            <button class="wc close" type="button" aria-label="Close themes"></button>
+                            <button class="wc min" type="button" aria-label="Minimize themes"></button>
+                            <button class="wc max" type="button" aria-label="Maximize themes"></button>
                         </div>
-                    </div>
+                        <h2 class="win-title" id="title-theme">hyprpaper ~ themes</h2>
+                    </header>
                     <div class="win-content theme-content">
                         <div class="theme-grid">
-                            <div class="theme-card" data-theme-id="aurora">
-                                <div class="theme-preview"
-                                    style="background: radial-gradient(circle at 20% 30%, rgba(122, 162, 247, 0.4) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(187, 154, 247, 0.4) 0%, transparent 40%), linear-gradient(135deg, #0a0a0f, #151520);">
-                                    <div class="preview-bar" style="background: rgba(10, 10, 15, 0.45);">
-                                        <span style="background: #25334d;"></span>
-                                        <span style="background: #382c4d;"></span>
-                                        <span style="background: #2c422c;"></span>
-                                    </div>
-                                </div>
-                                <div class="theme-name">Aurora</div>
-                            </div>
-
-                            <div class="theme-card" data-theme-id="abyss">
-                                <div class="theme-preview"
-                                    style="background: linear-gradient(rgba(8, 8, 8, 0.88), rgba(8, 8, 8, 0.98)), url('https://avatars.githubusercontent.com/u/89214022?v=4'); background-size: cover; background-position: center;">
-                                    <div class="preview-bar" style="background: rgba(5, 5, 5, 0.65);">
-                                        <span style="background: #19272b;"></span>
-                                        <span style="background: #251d36;"></span>
-                                        <span style="background: #331515;"></span>
-                                    </div>
-                                </div>
-                                <div class="theme-name">Abyss</div>
-                            </div>
-
-                            <div class="theme-card" data-theme-id="carbon">
-                                <div class="theme-preview"
-                                    style="background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);">
-                                    <div class="preview-bar" style="background: rgba(0, 0, 0, 0.8);">
-                                        <span style="background: #222222;"></span>
-                                        <span style="background: #1a1a1a;"></span>
-                                        <span style="background: #2a2a2a;"></span>
-                                    </div>
-                                </div>
-                                <div class="theme-name">Carbon</div>
-                            </div>
-
-                            <div class="theme-card" data-theme-id="neon">
-                                <div class="theme-preview"
-                                    style="background: linear-gradient(135deg, #050d14 0%, #0a192f 100%);">
-                                    <div class="preview-bar" style="background: rgba(5, 13, 20, 0.75);">
-                                        <span style="background: #2a1f38;"></span>
-                                        <span style="background: #3a1e28;"></span>
-                                        <span style="background: #383121;"></span>
-                                    </div>
-                                </div>
-                                <div class="theme-name">Neon</div>
-                            </div>
-
+                            <button class="theme-card" type="button" data-theme-id="aurora" aria-pressed="false">
+                                <span class="theme-preview tp-aurora"><span class="preview-bar"><i></i><i></i><i></i></span><span class="preview-win"></span></span>
+                                <span class="theme-name">Aurora</span>
+                            </button>
+                            <button class="theme-card" type="button" data-theme-id="abyss" aria-pressed="false">
+                                <span class="theme-preview tp-abyss"><span class="preview-bar"><i></i><i></i><i></i></span><span class="preview-win"></span></span>
+                                <span class="theme-name">Abyss</span>
+                            </button>
+                            <button class="theme-card" type="button" data-theme-id="carbon" aria-pressed="false">
+                                <span class="theme-preview tp-carbon"><span class="preview-bar"><i></i><i></i><i></i></span><span class="preview-win"></span></span>
+                                <span class="theme-name">Carbon</span>
+                            </button>
+                            <button class="theme-card" type="button" data-theme-id="neon" aria-pressed="true">
+                                <span class="theme-preview tp-neon"><span class="preview-bar"><i></i><i></i><i></i></span><span class="preview-win"></span></span>
+                                <span class="theme-name">Neon</span>
+                            </button>
                         </div>
+                        <p class="theme-hint c-dim">Your choice is remembered on this device. Also try <span class="c-green">theme carbon</span> in the terminal.</p>
                     </div>
-                </div>
+                </section>
 
                 <!-- WINDOW: BTOP -->
-                <div class="hypr-win hidden" id="win-btop"
-                    style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 700px;" data-title="btop">
-                    <div class="win-header">
-                        <div class="win-title">kitty ~ btop</div>
+                <section class="hypr-win" id="win-btop" data-w="720" data-name="btop" data-icon="ri-dashboard-3-line" aria-labelledby="title-btop" tabindex="-1">
+                    <header class="win-header">
                         <div class="win-controls">
-                            <div class="wc close"></div>
-                            <div class="wc min"></div>
-                            <div class="wc max"></div>
+                            <button class="wc close" type="button" aria-label="Close system monitor"></button>
+                            <button class="wc min" type="button" aria-label="Minimize system monitor"></button>
+                            <button class="wc max" type="button" aria-label="Maximize system monitor"></button>
+                        </div>
+                        <h2 class="win-title" id="title-btop">kitty ~ btop</h2>
+                    </header>
+                    <div class="win-content term-content btop-content">
+                        <p class="btop-note"><i class="ri-information-line" aria-hidden="true"></i> Load, network and process numbers are simulated. Cores, memory, connection and battery come from your browser when it shares them.</p>
+                        <div class="btop-grid">
+                            <div class="btop-box">
+                                <span class="btop-label c-green">cpu</span>
+                                <div class="btop-graph c-green" id="btop-graph" aria-hidden="true"></div>
+                                <div class="btop-meter"><span>CPU</span><div class="bar"><i id="btop-cpu-bar" style="--v: 40%; --c: var(--c-green)"></i></div><b id="btop-cpu">40%</b></div>
+                                <p class="btop-meta" id="btop-cores">cores --</p>
+                            </div>
+                            <div class="btop-box">
+                                <span class="btop-label c-blue">mem</span>
+                                <div class="btop-meter"><span>MEM</span><div class="bar"><i id="btop-mem-bar" style="--v: 60%; --c: var(--c-blue)"></i></div><b id="btop-mem">60%</b></div>
+                                <div class="btop-meter"><span>SWP</span><div class="bar"><i id="btop-swp-bar" style="--v: 4%; --c: var(--c-purple)"></i></div><b id="btop-swp">4%</b></div>
+                                <div class="btop-meter"><span>DSK</span><div class="bar"><i id="btop-dsk-bar" style="--v: 32%; --c: var(--c-red)"></i></div><b id="btop-dsk">32%</b></div>
+                                <p class="btop-meta" id="btop-memtotal">memory --</p>
+                            </div>
+                            <div class="btop-box">
+                                <span class="btop-label c-yellow">net</span>
+                                <p class="btop-net"><i class="ri-arrow-down-line c-yellow" aria-hidden="true"></i> <span id="btop-down">0.0</span> MB/s</p>
+                                <p class="btop-net"><i class="ri-arrow-up-line c-purple" aria-hidden="true"></i> <span id="btop-up">0.0</span> MB/s</p>
+                                <p class="btop-meta" id="btop-sys">lang -- | bat --</p>
+                            </div>
+                        </div>
+                        <div class="btop-box btop-procs">
+                            <span class="btop-label c-purple">proc</span>
+                            <div class="table-scroll">
+                                <table>
+                                    <thead>
+                                        <tr><th>PID</th><th>USER</th><th>%CPU</th><th>%MEM</th><th>COMMAND</th></tr>
+                                    </thead>
+                                    <tbody id="btop-procs"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                    <div class="win-content term-content btop-content"
-                        style="background: rgba(10,10,10,0.9); font-family: var(--font-mono); font-size: 13px; color: #fff;">
-                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                            <div style="flex: 1; border: 1px solid var(--c-gray); border-radius: 4px; padding: 10px;">
-                                <div class="c-gray" style="margin-bottom: 8px;">Simulated workload. Device capabilities are shown in the Waybar.</div>
-                                <div id="btop-cpu" style="color: var(--c-green); margin-bottom: 5px;">CPU [|||||||||||||| ] 55%  (6c)</div>
-                                <div id="btop-mem" style="color: var(--c-blue); margin-bottom: 5px;">MEM [|||||||||||||||||| ] 78% (16G)</div>
-                                <div id="btop-swp" style="color: var(--c-purple);">SWP [|| ] 5%</div>
-                            </div>
-                            <div style="flex: 1; border: 1px solid var(--c-gray); border-radius: 4px; padding: 10px;">
-                                <div id="btop-net" style="color: var(--c-yellow); margin-bottom: 5px;">NET ▼ 1.2 MB/s ▲ 0.4 MB/s (4G)</div>
-                                <div id="btop-dsk" style="color: var(--c-red); margin-bottom: 5px;">DSK [|||||| ] 32%</div>
-                                <div style="color: var(--c-main);">LNG: EN | BAT: 100% (Charging)</div>
-                            </div>
-                        </div>
-                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                            <thead>
-                                <tr style="border-bottom: 1px solid var(--c-gray); color: var(--c-gray);">
-                                    <th>PID</th>
-                                    <th>USER</th>
-                                    <th>PR</th>
-                                    <th>NI</th>
-                                    <th>VIRT</th>
-                                    <th>RES</th>
-                                    <th>%CPU</th>
-                                    <th>%MEM</th>
-                                    <th>COMMAND</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr style="color: var(--c-main);">
-                                    <td>1</td>
-                                    <td>root</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>1.8G</td>
-                                    <td>0.9G</td>
-                                    <td>8.5</td>
-                                    <td>4.2</td>
-                                    <td>Hyprland</td>
-                                </tr>
-                                <tr>
-                                    <td>112</td>
-                                    <td>tanmay</td>
-                                    <td>20</td>
-                                    <td>0</td>
-                                    <td>0.5G</td>
-                                    <td>0.2G</td>
-                                    <td>4.1</td>
-                                    <td>1.1</td>
-                                    <td>waybar</td>
-                                </tr>
-                                <tr>
-                                    <td>241</td>
-                                    <td>tanmay</td>
-                                    <td>20</td>
-                                    <td>0</td>
-                                    <td>0.3G</td>
-                                    <td>0.1G</td>
-                                    <td>1.2</td>
-                                    <td>0.5</td>
-                                    <td>wofi</td>
-                                </tr>
-                                <tr>
-                                    <td>1024</td>
-                                    <td>tanmay</td>
-                                    <td>20</td>
-                                    <td>0</td>
-                                    <td>1.2G</td>
-                                    <td>0.6G</td>
-                                    <td>5.2</td>
-                                    <td>3.5</td>
-                                    <td>kitty (whoami)</td>
-                                </tr>
-                                <tr>
-                                    <td>1025</td>
-                                    <td>tanmay</td>
-                                    <td>20</td>
-                                    <td>0</td>
-                                    <td>1.1G</td>
-                                    <td>0.5G</td>
-                                    <td>2.1</td>
-                                    <td>2.8</td>
-                                    <td>kitty (projects)</td>
-                                </tr>
-                                <tr>
-                                    <td>1026</td>
-                                    <td>tanmay</td>
-                                    <td>20</td>
-                                    <td>0</td>
-                                    <td>1.0G</td>
-                                    <td>0.4G</td>
-                                    <td>1.5</td>
-                                    <td>2.1</td>
-                                    <td>kitty (stack)</td>
-                                </tr>
-                                <tr>
-                                    <td>1027</td>
-                                    <td>tanmay</td>
-                                    <td>20</td>
-                                    <td>0</td>
-                                    <td>0.8G</td>
-                                    <td>0.3G</td>
-                                    <td>0.8</td>
-                                    <td>1.5</td>
-                                    <td>kitty (connect)</td>
-                                </tr>
-                                <tr>
-                                    <td>2048</td>
-                                    <td>tanmay</td>
-                                    <td>20</td>
-                                    <td>0</td>
-                                    <td>0.1G</td>
-                                    <td>0.1G</td>
-                                    <td>12.4</td>
-                                    <td>1.5</td>
-                                    <td>btop</td>
-                                </tr>
-                                <tr>
-                                    <td>3096</td>
-                                    <td>tanmay</td>
-                                    <td>20</td>
-                                    <td>0</td>
-                                    <td>0.4G</td>
-                                    <td>0.2G</td>
-                                    <td>0.5</td>
-                                    <td>0.8</td>
-                                    <td>theme-selector</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-            </div> <!-- END WORKSPACE 1 -->
+                    <div class="resize-handle" aria-hidden="true"></div>
+                </section>
+            </div>
 
             <!-- WORKSPACE 2 -->
-            <div class="workspace" id="ws-2">
+            <div class="workspace" id="ws-2" data-ws="2">
                 <!-- WINDOW: PROJECTS -->
-                <div class="hypr-win hidden" id="win-projects"
-                    style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 850px;">
-                    <div class="win-header">
-                        <div class="win-title">tanmay@hypr: ~/projects</div>
+                <section class="hypr-win" id="win-projects" data-w="860" data-name="projects" data-icon="ri-folder-3-line" aria-labelledby="title-projects" tabindex="-1">
+                    <header class="win-header">
                         <div class="win-controls">
-                            <div class="wc close"></div>
-                            <div class="wc min"></div>
-                            <div class="wc max"></div>
+                            <button class="wc close" type="button" aria-label="Close projects"></button>
+                            <button class="wc min" type="button" aria-label="Minimize projects"></button>
+                            <button class="wc max" type="button" aria-label="Maximize projects"></button>
                         </div>
-                    </div>
+                        <h2 class="win-title" id="title-projects">kitty ~ projects</h2>
+                    </header>
                     <div class="win-content term-content">
                         <div class="prompt-line">
-                            <span class="p-user">tanmay@hypr</span><span class="p-dir">~/projects</span> <span
-                                class="p-cmd">ls -la --color=auto</span>
+                            <span class="p-user">tanmay@hypr</span><span class="p-dir">~/projects</span><span class="p-cmd">ls -la --color=auto</span>
                         </div>
-                        <div class="out-line">total 5</div>
-
-                        <div class="ls-grid" id="github-repos">
-                            <!-- Headings -->
-                            <div class="ls-row ls-head">
-                                <span>Permissions</span>
-                                <span>Links</span>
-                                <span>User</span>
-                                <span>Group</span>
-                                <span>Size</span>
-                                <span>Date</span>
-                                <span>Name</span>
-                            </div>
-
-                            <div class="ls-row" id="repo-loading">
-                                <span class="c-gray">...</span>
-                                <span class="c-gray">...</span>
-                                <span class="c-yellow">...</span>
-                                <span class="c-yellow">...</span>
-                                <span class="c-blue">...</span>
-                                <span class="c-gray">...</span>
-                                <span class="c-main blink">Fetching repos from GitHub API...</span>
-                            </div>
-                        </div>
-
+                        <p class="out-line c-dim">total 5</p>
+                        <ul class="ls-list">
+                            <li class="ls-item">
+                                <a class="ls-row" href="https://github.com/tanmayhutt/blend" target="_blank" rel="noopener noreferrer">
+                                    <span class="ls-perm">drwxr-xr-x</span>
+                                    <span class="ls-name c-green">blend/</span>
+                                    <span class="ls-type">Private social product</span>
+                                    <span class="ls-status">in development</span>
+                                    <i class="ri-arrow-right-up-line ls-go" aria-hidden="true"></i>
+                                </a>
+                                <p class="ls-desc">A two-person experience for comparing YouTube tastes through separate, read-only account connections and a shared guided reveal.</p>
+                                <p class="ls-tags"><span>React</span><span>TypeScript</span><span>FastAPI</span><span>MongoDB</span><span>OAuth 2.0</span></p>
+                            </li>
+                            <li class="ls-item">
+                                <a class="ls-row" href="https://github.com/tanmayhutt/thwip-cli" target="_blank" rel="noopener noreferrer">
+                                    <span class="ls-perm">drwxr-xr-x</span>
+                                    <span class="ls-name c-purple">thwip/</span>
+                                    <span class="ls-type">Developer tool</span>
+                                    <span class="ls-status">open source</span>
+                                    <i class="ri-arrow-right-up-line ls-go" aria-hidden="true"></i>
+                                </a>
+                                <p class="ls-desc">A terminal interface for discovering local coding agents, switching providers mid-project, and carrying completed conversation context across tools.</p>
+                                <p class="ls-tags"><span>Python</span><span>Terminal UI</span><span>Agent tooling</span></p>
+                            </li>
+                            <li class="ls-item">
+                                <a class="ls-row" href="https://github.com/tanmayhutt/arch-server" target="_blank" rel="noopener noreferrer">
+                                    <span class="ls-perm">drwxr-xr-x</span>
+                                    <span class="ls-name c-blue">arch-server/</span>
+                                    <span class="ls-type">Infrastructure</span>
+                                    <span class="ls-status">self-hosted</span>
+                                    <i class="ri-arrow-right-up-line ls-go" aria-hidden="true"></i>
+                                </a>
+                                <p class="ls-desc">An old Lenovo laptop repurposed as a headless Arch Linux node for private storage, remote administration, and zero-port public web delivery.</p>
+                                <p class="ls-tags"><span>Arch Linux</span><span>Docker</span><span>Cloudflare</span><span>Tailscale</span></p>
+                            </li>
+                            <li class="ls-item">
+                                <a class="ls-row" href="https://github.com/tanmayhutt/FilmedIn" target="_blank" rel="noopener noreferrer">
+                                    <span class="ls-perm">drwxr-xr-x</span>
+                                    <span class="ls-name c-red">FilmedIn/</span>
+                                    <span class="ls-type">Full-stack application</span>
+                                    <span class="ls-status">deployed</span>
+                                    <i class="ri-arrow-right-up-line ls-go" aria-hidden="true"></i>
+                                </a>
+                                <p class="ls-desc">A place for movie and television fans to track media, build playlists, and generate wallpapers, with authentication and a full deployment.</p>
+                                <p class="ls-tags"><span>React</span><span>Express</span><span>MongoDB</span><span>TMDB</span></p>
+                            </li>
+                            <li class="ls-item">
+                                <a class="ls-row" href="https://github.com/tanmayhutt/WiFiSense" target="_blank" rel="noopener noreferrer">
+                                    <span class="ls-perm">drwxr-xr-x</span>
+                                    <span class="ls-name c-yellow">WiFiSense/</span>
+                                    <span class="ls-type">Embedded experiment</span>
+                                    <span class="ls-status">prototype</span>
+                                    <i class="ri-arrow-right-up-line ls-go" aria-hidden="true"></i>
+                                </a>
+                                <p class="ls-desc">ESP8266 firmware exploring room-presence detection through changes in Wi-Fi signal strength and layered statistical filtering.</p>
+                                <p class="ls-tags"><span>C++</span><span>ESP8266</span><span>Signal processing</span></p>
+                            </li>
+                        </ul>
+                        <p class="out-line mt-2 c-dim">More on <a class="inline-link" href="https://github.com/tanmayhutt?tab=repositories" target="_blank" rel="noopener noreferrer">github.com/tanmayhutt</a>, including Hyprland dotfiles and smaller experiments.</p>
                         <div class="prompt-line mt-2">
-                            <span class="p-user">tanmay@hypr</span><span class="p-dir">~/projects</span> <span
-                                class="p-cursor">█</span>
+                            <span class="p-user">tanmay@hypr</span><span class="p-dir">~/projects</span><span class="p-cursor" aria-hidden="true"></span>
                         </div>
                     </div>
-                </div>
-
-            </div> <!-- END WORKSPACE 2 -->
+                    <div class="resize-handle" aria-hidden="true"></div>
+                </section>
+            </div>
 
             <!-- WORKSPACE 3 -->
-            <div class="workspace" id="ws-3">
+            <div class="workspace" id="ws-3" data-ws="3">
                 <!-- WINDOW: STACK -->
-                <div class="hypr-win hidden" id="win-stack"
-                    style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 550px;">
-                    <div class="win-header">
-                        <div class="win-title">tanmay@hypr: ~/stack</div>
+                <section class="hypr-win" id="win-stack" data-w="540" data-name="stack" data-icon="ri-braces-line" aria-labelledby="title-stack" tabindex="-1">
+                    <header class="win-header">
                         <div class="win-controls">
-                            <div class="wc close"></div>
-                            <div class="wc min"></div>
-                            <div class="wc max"></div>
+                            <button class="wc close" type="button" aria-label="Close tech stack"></button>
+                            <button class="wc min" type="button" aria-label="Minimize tech stack"></button>
+                            <button class="wc max" type="button" aria-label="Maximize tech stack"></button>
                         </div>
-                    </div>
+                        <h2 class="win-title" id="title-stack">kitty ~ stack</h2>
+                    </header>
                     <div class="win-content term-content">
                         <div class="prompt-line">
-                            <span class="p-user">tanmay@hypr</span><span class="p-dir">~/stack</span> <span
-                                class="p-cmd">cat stack.json | jq</span>
+                            <span class="p-user">tanmay@hypr</span><span class="p-dir">~</span><span class="p-cmd">jq . stack.json</span>
                         </div>
-                        <div class="json-out">
-<span class="c-gray">{</span>
-  <span class="c-blue">"languages"</span><span class="c-gray">:</span> <span class="c-gray">[</span>
-    <span class="c-green">"TypeScript"</span><span class="c-gray">,</span>
-    <span class="c-green">"C/C++"</span><span class="c-gray">,</span>
-    <span class="c-green">"JavaScript"</span><span class="c-gray">,</span>
-    <span class="c-green">"GLSL"</span>
-  <span class="c-gray">],</span>
-  <span class="c-blue">"technologies"</span><span class="c-gray">:</span> <span class="c-gray">[</span>
-    <span class="c-green">"React"</span><span class="c-gray">,</span>
-    <span class="c-green">"Node.js"</span><span class="c-gray">,</span>
-    <span class="c-green">"Docker"</span><span class="c-gray">,</span>
-    <span class="c-green">"DigitalOcean"</span>
-  <span class="c-gray">],</span>
-  <span class="c-blue">"environment"</span><span class="c-gray">:</span> <span class="c-gray">{</span>
-    <span class="c-purple">"os"</span><span class="c-gray">:</span> <span class="c-green">"Arch Linux"</span><span class="c-gray">,</span>
-    <span class="c-purple">"wm"</span><span class="c-gray">:</span> <span class="c-green">"Hyprland"</span><span class="c-gray">,</span>
-    <span class="c-purple">"terminal"</span><span class="c-gray">:</span> <span class="c-green">"kitty + zsh"</span>
-  <span class="c-gray">}</span>
-<span class="c-gray">}</span>
-                        </div>
+<pre class="json-out"><span class="c-dim">{</span>
+  <span class="c-blue">"languages"</span><span class="c-dim">:</span> <span class="c-dim">[</span><span class="c-green">"TypeScript"</span><span class="c-dim">,</span> <span class="c-green">"JavaScript"</span><span class="c-dim">,</span> <span class="c-green">"Python"</span><span class="c-dim">,</span> <span class="c-green">"C++"</span><span class="c-dim">],</span>
+  <span class="c-blue">"web"</span><span class="c-dim">:</span> <span class="c-dim">[</span><span class="c-green">"React"</span><span class="c-dim">,</span> <span class="c-green">"FastAPI"</span><span class="c-dim">,</span> <span class="c-green">"Express"</span><span class="c-dim">,</span> <span class="c-green">"MongoDB"</span><span class="c-dim">],</span>
+  <span class="c-blue">"infra"</span><span class="c-dim">:</span> <span class="c-dim">[</span><span class="c-green">"Arch Linux"</span><span class="c-dim">,</span> <span class="c-green">"Docker"</span><span class="c-dim">,</span> <span class="c-green">"Cloudflare"</span><span class="c-dim">,</span> <span class="c-green">"Tailscale"</span><span class="c-dim">],</span>
+  <span class="c-blue">"hardware"</span><span class="c-dim">:</span> <span class="c-dim">[</span><span class="c-green">"ESP8266"</span><span class="c-dim">],</span>
+  <span class="c-blue">"environment"</span><span class="c-dim">:</span> <span class="c-dim">{</span>
+    <span class="c-purple">"os"</span><span class="c-dim">:</span> <span class="c-yellow">"Arch Linux"</span><span class="c-dim">,</span>
+    <span class="c-purple">"wm"</span><span class="c-dim">:</span> <span class="c-yellow">"Hyprland"</span><span class="c-dim">,</span>
+    <span class="c-purple">"terminal"</span><span class="c-dim">:</span> <span class="c-yellow">"kitty + zsh"</span><span class="c-dim">,</span>
+    <span class="c-purple">"dotfiles"</span><span class="c-dim">:</span> <a class="inline-link c-yellow" href="https://github.com/tanmayhutt/hyprland-dotfiles" target="_blank" rel="noopener noreferrer">"github.com/tanmayhutt/hyprland-dotfiles"</a>
+  <span class="c-dim">}</span>
+<span class="c-dim">}</span></pre>
                         <div class="prompt-line mt-2">
-                            <span class="p-user">tanmay@hypr</span><span class="p-dir">~/stack</span> <span
-                                class="p-cursor">█</span>
+                            <span class="p-user">tanmay@hypr</span><span class="p-dir">~</span><span class="p-cursor" aria-hidden="true"></span>
                         </div>
                     </div>
-                </div>
-
-            </div> <!-- END WORKSPACE 3 -->
+                    <div class="resize-handle" aria-hidden="true"></div>
+                </section>
+            </div>
 
             <!-- WORKSPACE 4 -->
-            <div class="workspace" id="ws-4">
-                <!-- WINDOW: CONNECT -->
-                <div class="hypr-win hidden" id="win-connect"
-                    style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 500px;">
-                    <div class="win-header">
-                        <div class="win-title">tanmay@hypr: ~/connect</div>
+            <div class="workspace" id="ws-4" data-ws="4">
+                <!-- WINDOW: CONTACT -->
+                <section class="hypr-win" id="win-connect" data-w="540" data-name="contact" data-icon="ri-mail-send-line" aria-labelledby="title-connect" tabindex="-1">
+                    <header class="win-header">
                         <div class="win-controls">
-                            <div class="wc close"></div>
-                            <div class="wc min"></div>
-                            <div class="wc max"></div>
+                            <button class="wc close" type="button" aria-label="Close contact"></button>
+                            <button class="wc min" type="button" aria-label="Minimize contact"></button>
+                            <button class="wc max" type="button" aria-label="Maximize contact"></button>
                         </div>
-                    </div>
+                        <h2 class="win-title" id="title-connect">kitty ~ contact</h2>
+                    </header>
                     <div class="win-content term-content">
                         <div class="prompt-line">
-                            <span class="p-user">tanmay@hypr</span><span class="p-dir">~/connect</span> <span
-                                class="p-cmd">ssh guest@github</span>
+                            <span class="p-user">tanmay@hypr</span><span class="p-dir">~</span><span class="p-cmd">ssh guest@tanmaytiwari.me</span>
                         </div>
-                        <div class="out-line c-gray mt-2">
-                            The authenticity of host 'github.com (140.82.112.4)' can't be established.<br>
-                            ED25519 key fingerprint is SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU.<br>
-                            Are you sure you want to continue connecting (yes/no/[fingerprint])? <span
-                                class="c-main">yes</span><br>
-                            Warning: Permanently added 'github.com' (ED25519) to the list of known hosts.
-                        </div>
-
-                        <div class="contact-box mt-4">
-                            <p class="c-green fw-bold">Connection established.</p>
-                            <p class="mt-2">Available protocols:</p>
-                            <ul class="c-list">
-                                <li><a href="https://github.com/tanmayhutt" target="_blank" rel="noopener noreferrer"><i
-                                            class="ri-github-fill"></i> GitHub -> github.com/tanmayhutt</a></li>
-                                <li><a href="mailto:tiwaritanmay1021@gmail.com"><i class="ri-mail-fill"></i>
-                                        Email -> Initiate Handshake</a></li>
-                                <li><a href="https://tanmaytiwari.me"><i class="ri-home-4-fill"></i>
-                                        Main portfolio -> tanmaytiwari.me</a></li>
-                            </ul>
-                        </div>
-
+                        <p class="out-line c-dim mt-2">Connection established. Pick a protocol.</p>
+                        <ul class="c-list">
+                            <li><a href="mailto:tiwaritanmay1021@gmail.com"><i class="ri-mail-line c-red" aria-hidden="true"></i><span class="c-key">email</span><span class="c-val">tiwaritanmay1021@gmail.com</span></a></li>
+                            <li><a href="https://github.com/tanmayhutt" target="_blank" rel="noopener noreferrer"><i class="ri-github-line c-main" aria-hidden="true"></i><span class="c-key">github</span><span class="c-val">github.com/tanmayhutt</span></a></li>
+                            <li><a href="https://www.linkedin.com/in/tanmay-tiwari-72719526a/" target="_blank" rel="noopener noreferrer"><i class="ri-linkedin-box-line c-blue" aria-hidden="true"></i><span class="c-key">linkedin</span><span class="c-val">in/tanmay-tiwari-72719526a</span></a></li>
+                            <li><a href="https://www.youtube.com/@saul.3gp" target="_blank" rel="noopener noreferrer"><i class="ri-youtube-line c-red" aria-hidden="true"></i><span class="c-key">youtube</span><span class="c-val">@saul.3gp</span></a></li>
+                            <li><a href="https://www.instagram.com/tanmayhutt" target="_blank" rel="noopener noreferrer"><i class="ri-instagram-line c-purple" aria-hidden="true"></i><span class="c-key">instagram</span><span class="c-val">@tanmayhutt</span></a></li>
+                            <li><a href="https://tanmaytiwari.me/resume/" target="_blank" rel="noopener noreferrer"><i class="ri-file-user-line c-yellow" aria-hidden="true"></i><span class="c-key">resume</span><span class="c-val">tanmaytiwari.me/resume</span></a></li>
+                            <li><a href="https://tanmaytiwari.me/"><i class="ri-home-5-line c-green" aria-hidden="true"></i><span class="c-key">home</span><span class="c-val">tanmaytiwari.me</span></a></li>
+                        </ul>
                         <div class="prompt-line mt-4">
-                            <span class="c-red">guest@github</span><span class="p-dir">~</span> <span
-                                class="p-cursor">█</span>
+                            <span class="p-user c-red">guest@tanmay</span><span class="p-dir">~</span><span class="p-cursor" aria-hidden="true"></span>
                         </div>
                     </div>
-                </div>
-            </div> <!-- END WORKSPACE 4 -->
-        </div> <!-- END DESKTOP TRACK -->
-
+                </section>
+            </div>
+        </div>
     </main>
 
-    <!-- Context Menu (Hidden by default) -->
-    <div id="context-menu" class="context-menu hidden">
-        <div class="cm-item"><i class="ri-terminal-box-line"></i> Open Terminal Here</div>
-        <div class="cm-item"><i class="ri-folder-open-line"></i> Open Ranger</div>
-        <div class="cm-sep"></div>
-        <div class="cm-item" id="cm-theme"><i class="ri-palette-line"></i> Change Theme</div>
-        <div class="cm-item"><i class="ri-settings-3-line"></i> Hyprland Settings</div>
+    <!-- Desktop context menu -->
+    <div id="context-menu" class="context-menu" role="menu" aria-label="Desktop menu" hidden>
+        <button class="cm-item" type="button" role="menuitem" data-action="terminal"><i class="ri-terminal-box-line" aria-hidden="true"></i> Open terminal</button>
+        <button class="cm-item" type="button" role="menuitem" data-action="launcher"><i class="ri-apps-2-line" aria-hidden="true"></i> Open launcher</button>
+        <button class="cm-item" type="button" role="menuitem" data-action="tile"><i class="ri-layout-grid-line" aria-hidden="true"></i> Tile windows</button>
+        <div class="cm-sep" role="separator"></div>
+        <button class="cm-item" type="button" role="menuitem" data-action="theme"><i class="ri-palette-line" aria-hidden="true"></i> Next theme</button>
+        <button class="cm-item" type="button" role="menuitem" data-action="close-all"><i class="ri-close-circle-line" aria-hidden="true"></i> Close all here</button>
     </div>
 
     <script src="script.js"></script>
